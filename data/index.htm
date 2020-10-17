@@ -1,0 +1,56 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title> Lamp </title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+	<link rel="manifest" href="/manifest.json">
+</head>
+
+<body>
+
+<section>
+<div ng-app="myApp" ng-controller="lampController" >
+
+	<nav class="navbar navbar-light bg-light justify-content-between">
+		<a class=" navbar-brand nav-link" ui-sref="home" ui-sref-active="active">Lamp</a>
+		<a class="nav-link" ui-sref="settings" ui-sref-active="active"><span class="material-icons md-32">settings</span></a>
+	</nav>
+
+	<section class="container-fluid">
+		<ui-view></ui-view>
+	</section>
+
+
+<script>
+// service worker for offline caching
+// if (!navigator.serviceWorker.controller) {
+//      navigator.serviceWorker.register("/serviceWorker.js").then(function(reg) {
+//          console.log("Service worker has been registered for scope: " + reg.scope);
+//      });
+//  }
+</script>
+
+
+
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js"></script> -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/1.0.25/angular-ui-router.min.js"></script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/@jaames/iro@5"></script>
+
+<script src="./lampController.js"></script>
+
+<script src="./colorWheelDirective.js"></script>
+
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</body>
+</html>
