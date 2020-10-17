@@ -24,8 +24,14 @@ jobs:
         
     - name: Run PlatformIO
       run: platformio run -e d1_mini 
+<<<<<<< HEAD
 
       with:
         source: ".pio/build/d1_mini/firmware.bin"
         target: "firmware.bin"
 
+=======
+      artifacts:
+        paths:
+        - .pio/build/d1_mini/firmware.elf
+>>>>>>> 045586829a2bf82a94567fa5c984d945d2e77954
