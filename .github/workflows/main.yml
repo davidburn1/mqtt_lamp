@@ -24,8 +24,3 @@ jobs:
         
     - name: Run PlatformIO
       run: platformio run -e d1_mini 
-
-      with:
-        source: ".pio/build/d1_mini/firmware.bin"
-        target: "firmware.bin"
-
