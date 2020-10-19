@@ -29,6 +29,7 @@ settings_t settings;
 
 uint32_t lastMsg = 0;
 uint32_t timer10s = 0;
+uint32_t timer10m = 0;
 
 
 
@@ -77,7 +78,6 @@ void setup() {
   pinMode(LED, OUTPUT);
   pinMode(PIXELS_PIN, OUTPUT);
   digitalWrite(LED, HIGH); //off
-  //digitalWrite(PIXELS_PIN, LOW); 
 
   Serial.begin(115200);
   Serial.println("");
@@ -101,10 +101,7 @@ void setup() {
   WiFi.begin();
 
   mqttClient.setServer(settings.mqttServer, settings.mqttPort);
-  mqttClient.setCallback(mqttCallback);
-
-
-  
+  mqttClient.setCallback(mqttCallback);  
 }
 
 
@@ -112,7 +109,8 @@ void setup() {
 
 
 void loop() {
-   //if (!client.connected()) {
+  delay(1);
+  //if (!client.connected()) {
   //  MQTTReconnect();
   //}
 
@@ -124,11 +122,17 @@ void loop() {
 
   pixelLoop();
 
-  if (millis() - timer10s > 10000) {
-    timer10s += 10000;
-    //checkForFirmwareUpdates();
-  }
+  // if (millis() - timer10s > 10000) {
+  //   timer10s += 10000;
+  //   //checkForFirmwareUpdates();
+  // }
 
+  if (millis() - timer10m > 600000) {
+    timer10m += 600000;
+
+    //shut down soft AP
+    WiFi.mode(WIFI_STA);
+  }
   
 
 

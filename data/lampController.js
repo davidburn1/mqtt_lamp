@@ -69,7 +69,6 @@ app.controller('settingsController', function($scope, $state, $location, $http) 
 
 	$scope.wifiScan();
 	setInterval($scope.wifiScan, 10000);
-
 });
 
 

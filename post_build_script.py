@@ -5,14 +5,12 @@ def after_build_firmware(source, target, env):
     print("after_build firmware")
     print("the target is ", str(target[0]))
     copyfile(str(target[0]), 'bin/firmware.bin')
-    copyfile(".pio/build/d1_mini/littlefs.bin", 'bin/littlefs.bin')
-
-    #platformio run --target buildfs
 
 
 def after_build_littleFS(source, target, env):
     print("after_build littleFS")
-    copyfile(".pio/build/d1_mini/littlefs.bin", 'bin/littlefs.bin')
+    copyfile(str(target[0]), 'bin/littlefs.bin')
+    #copyfile(".pio/build/d1_mini/littlefs.bin", 'bin/littlefs.bin')
 
 
 env.AddPostAction("$BUILD_DIR/${PROGNAME}.bin", after_build_firmware)
