@@ -82,7 +82,7 @@ app.controller('lampController', function($scope, $location, $http) {
 	$scope.lampState['lampState']; 
 	$scope.lampState['presets'];
 
-	$scope.lampState['brightness'];
+	$scope.lampState['brightness'] = 5;
 
 	//$scope.lampState['hue'] = 0
 	//$scope.lampState['saturation'] = 0
