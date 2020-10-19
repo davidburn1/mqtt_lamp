@@ -1,5 +1,6 @@
 #include <Arduino.h>
 #include <ESP8266HTTPUpdateServer.h>
+#include <ESP8266httpUpdate.h>
 
 
 ESP8266HTTPUpdateServer httpUpdater;
@@ -208,7 +209,7 @@ void changeSettings(void){
 
 
 
-void serveFileFromSPIFFS(String path) {
+void serveFileFromLittleFS(String path) {
   if(path.endsWith("/")) path += "index.htm";
 
   String contentType = "text/plain";
@@ -216,8 +217,8 @@ void serveFileFromSPIFFS(String path) {
   if (path.endsWith(".css")) contentType = "text/css";
   if (path.endsWith(".js")) contentType = "application/javascript";
 
-  if (SPIFFS.exists(path)) {
-    File file = SPIFFS.open(path, "r");
+  File file = LittleFS.open(path, "r");
+  if (file) {
     webServer.streamFile(file, contentType);
     file.close();
   } else {
@@ -227,24 +228,66 @@ void serveFileFromSPIFFS(String path) {
 
 
 
+
+
+
+
+void checkForFirmwareUpdates(void){
+  Serial.println("checking for updates...");
+  webServer.send(200, "text/html", "updating firmware");
+  delay(1000);
+
+  WiFiClientSecure clientSecure;
+  clientSecure.setInsecure(); // make this secure for production
+  t_httpUpdate_return ret = ESPhttpUpdate.update(clientSecure, "https://raw.githubusercontent.com/davidburn1/mqtt_lamp/master/bin/firmware.bin" );
+
+  switch(ret) {
+    case HTTP_UPDATE_FAILED:
+      Serial.printf("HTTP_UPDATE_FAILED Error (%d): %s",  ESPhttpUpdate.getLastError(), ESPhttpUpdate.getLastErrorString().c_str());
+      break;
+
+   case HTTP_UPDATE_NO_UPDATES:
+      Serial.println("HTTP_UPDATE_NO_UPDATES");
+      break;
+  case HTTP_UPDATE_OK:
+    break;
+  }
+
+
+
+
+  Serial.println("after checking for updates...");
+
+    //   ret=ESPhttpUpdate.updateSpiffs(updateUrl,SPIFFS_VERSION);
+
+}
+
+
+
+
 void startWebServer(void){
   httpUpdater.setup(&webServer);
 
-  SPIFFS.begin();
+  //SPIFFS.begin();
+
+  Serial.println(F("Inizializing FS..."));
+    if (LittleFS.begin()){
+        Serial.println(F("done."));
+    }else{
+        Serial.println(F("fail."));
+    }
 
 
   //httpUpdater.setup(&webServer);
   webServer.on("/test", indexPage);
   webServer.on("/wifiStatus", ajaxWifiStatus);
   webServer.on("/changeWiFiSettings", changeWiFiSettings);
-
-  //serveFileFromSPIFFS(webServer.uri()); 
+  webServer.on("/updateFirmware", checkForFirmwareUpdates);
 
   webServer.onNotFound([](){  // any other option
-    serveFileFromSPIFFS(webServer.uri()); 
+    serveFileFromLittleFS(webServer.uri()); 
   });
 
   webServer.begin();
   //MDNS.begin("mqttLight");
 }
-

@@ -4,7 +4,7 @@
 #include <WebSocketsServer.h>
 #include <PubSubClient.h>
 #include <EEPROM.h>
-#include <FS.h>   // Include the SPIFFS library
+#include "LittleFS.h"
 #include <Adafruit_NeoPixel.h>
 
 #include <ArduinoJson.h>
@@ -28,6 +28,7 @@ char charBuffer[1024];
 settings_t settings; 
 
 uint32_t lastMsg = 0;
+uint32_t timer10s = 0;
 
 
 
@@ -101,6 +102,9 @@ void setup() {
 
   mqttClient.setServer(settings.mqttServer, settings.mqttPort);
   mqttClient.setCallback(mqttCallback);
+
+
+  
 }
 
 
@@ -119,6 +123,13 @@ void loop() {
   webServer.handleClient();
 
   pixelLoop();
+
+  if (millis() - timer10s > 10000) {
+    timer10s += 10000;
+    //checkForFirmwareUpdates();
+  }
+
+  
 
 
 // button press

@@ -60,6 +60,13 @@ app.controller('settingsController', function($scope, $state, $location, $http) 
 		});
 	}
 
+	$scope.updateFirmware = function(){
+		$http.get("http://" + $scope.host + "/updateFirmware")
+		.then(function(response) {
+			console.log(response.data);
+		});
+	}
+
 	$scope.wifiScan();
 	setInterval($scope.wifiScan, 10000);
 
